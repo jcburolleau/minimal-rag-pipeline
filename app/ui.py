@@ -9,12 +9,6 @@ import gradio as gr
 from app.chat import answer
 from app.models import ChatTurn
 
-EXAMPLES = [
-    "What is the unit price and lead time for the river gauge, and which supplier builds its ultrasonic sensor?",
-    "Which supply contract renews first, and what is the liability cap?",
-    "Did the 2025 amendment change the soil-probe lead time?",
-]
-
 
 def _turns(history: list | None) -> list[ChatTurn]:
     turns: list[ChatTurn] = []
@@ -65,7 +59,6 @@ def main() -> None:
             gr.Checkbox(value=True, label="Search knowledge base"),
         ],
         additional_inputs_accordion=gr.Accordion("Options", open=True),
-        examples=[[question, True] for question in EXAMPLES],
     )
     chat.launch()
 
