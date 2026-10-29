@@ -30,12 +30,6 @@ uv run python -m app.ui
 
 Open the Gradio URL printed in the terminal (usually [http://127.0.0.1:7860](http://127.0.0.1:7860)).
 
-## Example questions
-
-- What is the unit price and lead time for the river gauge, and which supplier builds its ultrasonic sensor?
-- Which supply contract renews first, and what is the liability cap?
-- Did the 2025 amendment change the soil-probe lead time?
-
 ## Corpus
 
 Hand-written entities live in [`corpus/entities/`](corpus/entities/). [`scripts/build_corpus.py`](scripts/build_corpus.py) renders them to markdown in [`corpus/docs/`](corpus/docs/). Ingest loads those files as LangChain `Document`s, splits with `MarkdownHeaderTextSplitter` then `MarkdownTextSplitter`, and overwrites the `northline` Chroma collection through the LangChain store. Re-run ingest after any embed-model change.
