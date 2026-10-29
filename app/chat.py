@@ -9,15 +9,13 @@ from app.models import ChatTurn, Source
 from app.prompts import answer_prompt, as_chat_history, rewrite_prompt
 
 
-def answer(message: str, history: list[ChatTurn], use_retrieval: bool) -> Iterator[str]:
+def answer(message: str, history: list[ChatTurn]) -> Iterator[str]:
     history_messages = as_chat_history(history)
-    sources: list[Source] = []
-    if use_retrieval:
-        retriever = create_history_aware_retriever(llm(), as_retriever(), rewrite_prompt())
-        documents = retriever.invoke({"input": message, "chat_history": history_messages})
-        sources = _documents_to_sources(documents)
+    retriever = create_history_aware_retriever(llm(), as_retriever(), rewrite_prompt())
+    documents = retriever.invoke({"input": message, "chat_history": history_messages})
+    sources = _documents_to_sources(documents)
 
-    prompt = answer_prompt(use_retrieval, sources)
+    prompt = answer_prompt(sources)
     prompt_value = prompt.invoke({"input": message, "chat_history": history_messages})
     for chunk in llm().stream(prompt_value.to_messages()):
         text = chunk.content if isinstance(chunk.content, str) else ""

@@ -36,8 +36,6 @@ Open the Gradio URL printed in the terminal (usually [http://127.0.0.1:7860](htt
 - Which supply contract renews first, and what is the liability cap?
 - Did the 2025 amendment change the soil-probe lead time?
 
-Turn **Search knowledge base** off and ask the same questions. The model is instructed to refuse company-specific facts.
-
 ## Corpus
 
 Hand-written entities live in [`corpus/entities/`](corpus/entities/). [`scripts/build_corpus.py`](scripts/build_corpus.py) renders them to markdown in [`corpus/docs/`](corpus/docs/). Ingest loads those files as LangChain `Document`s, splits with `MarkdownHeaderTextSplitter` then `MarkdownTextSplitter`, and overwrites the `northline` Chroma collection through the LangChain store. Re-run ingest after any embed-model change.

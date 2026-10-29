@@ -16,11 +16,6 @@ Do not mention retrieved passages, scores, or source titles. Answer the question
 Every document is fictional. Do not claim Northline Sensors is a real company.
 """
 
-UNGROUNDED_SYSTEM = """You are a local chat model with no access to Northline Sensors internal documents.
-
-Northline Sensors is a fictional company. You do not know its products, prices, suppliers, contracts, or policies. If the user asks anything company-specific, refuse and say knowledge-base search is off. You may explain that turning search on will retrieve the fictional documents.
-"""
-
 REWRITE_SYSTEM = """Given a chat history and the latest user question, which might reference context in the chat history, formulate a standalone search query for the Northline Sensors knowledge base.
 
 Do not answer the question. Return only the search query as a single line. If the question is already standalone, return it unchanged. Spell out abbreviated officer titles such as CEO, CTO, and CFO. Follow-up questions still refer to Northline Sensors unless the user names another organization.
@@ -50,11 +45,8 @@ def rewrite_prompt() -> ChatPromptTemplate:
     )
 
 
-def answer_prompt(use_retrieval: bool, sources: list[Source] | None) -> ChatPromptTemplate:
-    if use_retrieval:
-        system = GROUNDED_SYSTEM + "\n\nRetrieved passages:\n\n" + format_passages(sources or [])
-    else:
-        system = UNGROUNDED_SYSTEM
+def answer_prompt(sources: list[Source]) -> ChatPromptTemplate:
+    system = GROUNDED_SYSTEM + "\n\nRetrieved passages:\n\n" + format_passages(sources)
     return ChatPromptTemplate.from_messages(
         [
             SystemMessage(content=system),

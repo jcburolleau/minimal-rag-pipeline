@@ -33,14 +33,14 @@ def _turns(history: list | None) -> list[ChatTurn]:
     return turns
 
 
-def respond(message: str, history: list, use_retrieval: bool) -> Iterator[str]:
+def respond(message: str, history: list) -> Iterator[str]:
     text = message.strip()
     if not text:
         yield "Ask a question about a product, supplier, or contract."
         return
     accumulated = ""
     try:
-        for chunk in answer(text, _turns(history), bool(use_retrieval)):
+        for chunk in answer(text, _turns(history)):
             accumulated += chunk
             yield accumulated
     except Exception as exc:  # noqa: BLE001 — show retrieve/generate failures in the chat
@@ -55,10 +55,6 @@ def main() -> None:
             "Internal lookup over a fictional instrument catalogue, suppliers, and contracts. "
             "Answers come from retrieved passages, not from the model's memory."
         ),
-        additional_inputs=[
-            gr.Checkbox(value=True, label="Search knowledge base"),
-        ],
-        additional_inputs_accordion=gr.Accordion("Options", open=True),
     )
     chat.launch()
 
