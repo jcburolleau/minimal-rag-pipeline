@@ -1,0 +1,157 @@
+agreements:
+  - id: C-2022-JF
+    title: Supply Agreement — Jura Fasteners SA
+    supplier_id: jura-fasteners
+    supplier_name: Jura Fasteners SA
+    signed: "2022-12-01"
+    start: "2023-01-01"
+    end: "2026-11-30"
+    currency: CHF
+    annual_cap_chf: 180000
+    liability_cap_chf: 250000
+    incoterms: DAP Delémont
+    payment_terms: Net 15
+    renewal: Auto-renews for 24 months unless either party gives 90 days notice.
+    notes: >
+      This is the first Northline supply contract to reach its current end date.
+      Procurement should open renewal talks in September 2026.
+
+  - id: C-2023-BP
+    title: Supply Agreement — Baltic Piezo UAB
+    supplier_id: baltic-piezo
+    supplier_name: Baltic Piezo UAB
+    signed: "2023-03-15"
+    start: "2023-04-01"
+    end: "2027-03-31"
+    currency: EUR
+    annual_cap_chf: 420000
+    liability_cap_chf: 800000
+    incoterms: DAP Lausanne
+    payment_terms: Net 30
+    exclusive_parts: [BP-U40-200, BP-U200-PAIR]
+    renewal: Renewal window opens 1 October 2026.
+    notes: >
+      Exclusive ultrasonic source. A six-month safety stock of BP-U40-200 is held
+      in Lausanne because the part is single-sourced.
+
+  - id: C-2023-AC
+    title: Supply Agreement — Alpine Cells SA
+    supplier_id: alpine-cells
+    supplier_name: Alpine Cells SA
+    signed: "2023-11-20"
+    start: "2024-01-01"
+    end: "2026-12-15"
+    currency: CHF
+    annual_cap_chf: 260000
+    liability_cap_chf: 400000
+    incoterms: EXW Sion
+    payment_terms: Net 30
+    renewal: Manual renewal. No auto-renew clause.
+    notes: >
+      Second contract to expire after Jura Fasteners. Cold-rated packs need a
+      1 February order for May glacier kits.
+
+  - id: C-2024-RS
+    title: Supply Agreement — Rhine Silicon GmbH
+    supplier_id: rhine-silicon
+    supplier_name: Rhine Silicon GmbH
+    signed: "2024-01-08"
+    start: "2024-02-01"
+    end: "2027-01-31"
+    currency: EUR
+    annual_cap_chf: 190000
+    liability_cap_chf: 350000
+    incoterms: DAP Freiburg
+    payment_terms: Net 45
+    original_lead_time_days: 45
+    lead_time_days: 70
+    unit_price_eur: 18.40
+    part: RS-HUM-7
+    renewal: Auto-renews for 12 months unless 60 days notice.
+    notes: >
+      Original lead time for RS-HUM-7 was 45 days. Amendment AMD-2025-01 dated
+      18 April 2025 changed the lead time to 70 days. The EUR 18.40 piece price
+      did not change. This agreement is superseded on lead time only by that
+      amendment.
+
+  - id: C-2024-HC
+    title: Supply Agreement — Helvetia Ceramics SA
+    supplier_id: helvetia-ceramics
+    supplier_name: Helvetia Ceramics SA
+    signed: "2024-05-02"
+    start: "2024-06-01"
+    end: "2027-06-30"
+    currency: CHF
+    annual_cap_chf: 310000
+    liability_cap_chf: 500000
+    incoterms: DAP Renens
+    payment_terms: Net 15
+    renewal: Auto-renews for 36 months.
+    notes: Consignment of two weeks of river-gauge housings is covered in annex B.
+
+  - id: C-2024-TO
+    title: Supply Agreement — Tessin Optics SA
+    supplier_id: tessin-optics
+    supplier_name: Tessin Optics SA
+    signed: "2024-03-11"
+    start: "2024-04-01"
+    end: "2027-04-30"
+    currency: CHF
+    annual_cap_chf: 220000
+    liability_cap_chf: 450000
+    incoterms: DAP Lugano
+    payment_terms: Net 30
+    renewal: Manual renewal.
+    notes: Optical lots are serialized. Rejects over 2% in a lot trigger a full-lot review.
+
+  - id: C-2025-NK
+    title: Supply Agreement — Nordkrets AB
+    supplier_id: nordkrets
+    supplier_name: Nordkrets AB
+    signed: "2025-01-09"
+    start: "2025-02-01"
+    end: "2028-01-31"
+    currency: EUR
+    annual_cap_chf: 540000
+    liability_cap_chf: 900000
+    incoterms: DAP Malmö
+    payment_terms: Net 30
+    renewal: Auto-renews for 24 months.
+    notes: NPI boards are quoted separately and do not count against the annual cap.
+
+  - id: C-2025-LC
+    title: Supply Agreement — Léman Cables SA
+    supplier_id: leman-cables
+    supplier_name: Léman Cables SA
+    signed: "2025-08-20"
+    start: "2025-09-01"
+    end: "2027-09-30"
+    currency: CHF
+    annual_cap_chf: 140000
+    liability_cap_chf: 200000
+    incoterms: DAP Vevey
+    payment_terms: Net 30
+    renewal: Auto-renews for 12 months.
+    notes: Purple overmold colour RAL 4008 is mandatory on wet-mate lines.
+
+amendments:
+  - id: AMD-2025-01
+    amends: C-2024-RS
+    title: Amendment 1 to Rhine Silicon supply agreement
+    signed: "2025-04-18"
+    effective: "2025-04-20"
+    summary: >
+      Changes the standard lead time for part RS-HUM-7 from 45 days to 70 days
+      because of a process move at the Dresden fab. Piece price remains
+      EUR 18.40. All other terms of C-2024-RS stay in force.
+    changes:
+      - field: lead_time_days
+        from: 45
+        to: 70
+      - field: unit_price_eur
+        from: 18.40
+        to: 18.40
+    impact: >
+      Finished NL-SP-90 probes inherit the 70-day lead time. Northline did not
+      raise the CHF 890 list price of the probe. Safety stock of RS-HUM-7 was
+      increased from four weeks to eight weeks.

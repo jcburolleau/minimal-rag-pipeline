@@ -1,0 +1,31 @@
+name: Northline Sensors SA
+legal_name: Northline Sensors Société Anonyme
+founded: "2014-03-12"
+hq: Avenue de Rhodanie 54, 1007 Lausanne, Switzerland
+vat: CHE-314.882.019
+employees: 86
+ceo: Léa Morel
+cfo: Martin Keller
+cto: Anja Vuković
+mission: >
+  Design and manufacture field instruments that measure water, soil, air, and ice
+  for hydrology networks, municipalities, and alpine research groups.
+fictional_notice: >
+  Northline Sensors is a fictional company created for a local RAG demonstration.
+  None of the products, prices, suppliers, or contracts exist.
+business_units:
+  - name: Hydrology Instruments
+    lead: Camille Dufour
+  - name: Soil and Agronomy
+    lead: Henrik Dahl
+  - name: Atmospheric and Ice
+    lead: Sofia Ricci
+  - name: Connectivity
+    lead: Jonas Meier
+support:
+  email: support@northline.example
+  hours: Monday to Friday, 08:00–17:30 CET
+  warranty_years: 3
+banking:
+  iban: CH93 0076 2011 6238 5295 7
+  currency: CHF

@@ -1,0 +1,58 @@
+- id: POL-PROC-04
+  title: Procurement policy
+  date: "2025-02-01"
+  owner: Martin Keller
+  summary: How Northline buys parts and services.
+  body: |
+    Single-source parts require a written dual-source plan within twelve months
+    of first production use. Baltic Piezo transducers and Rhine Silicon moisture
+    ICs are currently single-source and are listed on the dual-source register.
+
+    Purchase orders over CHF 25 000 need CFO countersignature. Orders over
+    CHF 80 000 need CEO countersignature.
+
+    Lead times published on product sheets must match the live supplier lead
+    time, including amendments. The NL-SP-90 sheet is the reference example:
+    it tracks AMD-2025-01, not the original C-2024-RS clause.
+
+- id: POL-WARR-02
+  title: Warranty and field service
+  date: "2024-10-01"
+  owner: Camille Dufour
+  summary: Cover for instruments sold after 1 October 2024.
+  body: |
+    Hardware warranty is three years from ship date, parts and labour, provided
+    field recalibration uses NL-CAL-KIT or a Northline service day.
+
+    Water-quality sondes (NL-WQ-3) require annual calibration. Missed
+    calibration suspends warranty on the optical window only.
+
+    Glacier stakes (NL-ICE-2) are warranted against freeze damage. They are not
+    warranted against burial, avalanche, or crevasse loss.
+
+- id: POL-DATA-01
+  title: Customer telemetry retention
+  date: "2025-01-06"
+  owner: Anja Vuković
+  summary: How long Northline keeps customer sensor frames.
+  body: |
+    Northline gateways may forward frames to the customer's own broker. When
+    Northline hosts the broker, frames are kept for 24 months, then deleted.
+
+    Northline does not sell telemetry. Support staff may inspect the last
+    14 days of frames when a ticket is open.
+
+- id: POL-SHIP-03
+  title: Shipping and Incoterms
+  date: "2024-07-15"
+  owner: Jonas Meier
+  summary: Default shipping terms for finished goods.
+  body: |
+    Default sale term is DAP customer site in Switzerland, DAP Basel for EU
+    customers, and FCA Lausanne for all other destinations.
+
+    Lithium batteries ship as UN3481. Alpine Cells packs above 100 Wh go as
+    cargo-aircraft only.
+
+    Calibration kits with liquid buffers cannot travel in the same carton as
+    lithium packs.

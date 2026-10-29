@@ -1,0 +1,254 @@
+- sku: NL-RG-240
+  name: Alpine River Gauge
+  category: Hydrology
+  unit_price_chf: 2480
+  lead_time_days: 28
+  list_date: "2025-01-15"
+  summary: >
+    Side-looking ultrasonic water-level gauge for alpine rivers and irrigation
+    canals. Mounts on a bank or bridge pier and reports stage over LoRaWAN.
+  specs:
+    range_m: 0.2–12
+    accuracy_mm: 8
+    sample_interval_s: 30
+    ip_rating: IP67
+    operating_c: -30 to 55
+    battery: Alpine Cells AC-14 14.4 V pack, 18 months typical
+  bom:
+    - part: BP-U40-200
+      name: 40 kHz ultrasonic transducer
+      supplier: Baltic Piezo UAB
+    - part: HC-RG-CAN
+      name: Anodized aluminium housing
+      supplier: Helvetia Ceramics SA
+    - part: NK-RG-MAIN
+      name: Main PCB
+      supplier: Nordkrets AB
+    - part: LC-8C-5M
+      name: 5 m screened cable
+      supplier: Léman Cables SA
+  notes: >
+    List price frozen through 31 December 2026 per internal memo MEM-2024-11.
+    Calibration kit NL-CAL-KIT is sold separately.
+
+- sku: NL-SP-90
+  name: Pedon Soil Probe
+  category: Soil
+  unit_price_chf: 890
+  lead_time_days: 70
+  list_date: "2025-04-20"
+  summary: >
+    Three-depth soil moisture and temperature probe for vineyards, alpine
+    pastures, and municipal parks. The 70-day lead time reflects the April 2025
+    Rhine Silicon amendment.
+  specs:
+    depths_cm: [10, 30, 60]
+    moisture_accuracy_pct: 2.5
+    temperature_accuracy_c: 0.3
+    ip_rating: IP68
+    operating_c: -20 to 60
+  bom:
+    - part: RS-HUM-7
+      name: Capacitive moisture IC
+      supplier: Rhine Silicon GmbH
+    - part: HC-SP-SHAFT
+      name: Ceramic-coated shaft
+      supplier: Helvetia Ceramics SA
+    - part: NK-SP-NODE
+      name: Probe electronics
+      supplier: Nordkrets AB
+  notes: >
+    Lead time was 45 days under contract C-2024-RS until amendment AMD-2025-01
+    dated 18 April 2025 raised it to 70 days. Unit price of the finished probe
+    stayed at CHF 890.
+
+- sku: NL-WS-12
+  name: Ridge Weather Station
+  category: Atmosphere
+  unit_price_chf: 4120
+  lead_time_days: 42
+  list_date: "2024-09-01"
+  summary: >
+    Compact ridge-top station measuring wind, precipitation, temperature,
+    humidity, and barometric pressure. Designed for 2 000 m installations.
+  specs:
+    wind_max_ms: 60
+    precip_resolution_mm: 0.2
+    ip_rating: IP66
+    mast: 2 m folding aluminium
+  bom:
+    - part: TO-CUP-90
+      name: Optical rain window
+      supplier: Tessin Optics SA
+    - part: AC-24
+      name: 24 V battery pack
+      supplier: Alpine Cells SA
+    - part: JF-MAST-KIT
+      name: Mast hardware kit
+      supplier: Jura Fasteners SA
+  notes: Winter installations above 1 800 m require the ice-load bracket (optional).
+
+- sku: NL-WQ-3
+  name: Rhône Water Quality Sonde
+  category: Hydrology
+  unit_price_chf: 6350
+  lead_time_days: 56
+  list_date: "2025-02-10"
+  summary: >
+    Multi-parameter sonde for conductivity, dissolved oxygen, turbidity, and pH
+    in rivers and lake littoral zones.
+  specs:
+    parameters: [conductivity, dissolved oxygen, turbidity, pH]
+    depth_rating_m: 30
+    ip_rating: IP68
+  bom:
+    - part: TO-DO-WIN
+      name: Dissolved-oxygen optical window
+      supplier: Tessin Optics SA
+    - part: HC-SONDE
+      name: Pressure housing
+      supplier: Helvetia Ceramics SA
+    - part: LC-WQ-12M
+      name: 12 m wet-mate cable
+      supplier: Léman Cables SA
+  notes: Factory calibration is valid for 12 months. Recalibrate with NL-CAL-KIT.
+
+- sku: NL-AQ-7
+  name: Canopy Air Node
+  category: Atmosphere
+  unit_price_chf: 1560
+  lead_time_days: 21
+  list_date: "2024-11-04"
+  summary: >
+    Urban and forest-canopy node for PM2.5, NO2, ozone, and temperature.
+    Intended for municipal air networks.
+  specs:
+    pollutants: [PM2.5, NO2, O3]
+    sample_interval_s: 60
+    ip_rating: IP54
+  bom:
+    - part: TO-AQ-CELL
+      name: Optical dust cell
+      supplier: Tessin Optics SA
+    - part: NK-AQ-MAIN
+      name: Sensor PCB
+      supplier: Nordkrets AB
+    - part: AC-5V
+      name: 5 V cell pack
+      supplier: Alpine Cells SA
+  notes: Not rated for continuous spray. Use NL-WS-12 for exposed ridgelines.
+
+- sku: NL-GW-4
+  name: Field Gateway
+  category: Connectivity
+  unit_price_chf: 980
+  lead_time_days: 14
+  list_date: "2025-03-01"
+  summary: >
+    LoRaWAN gateway with Ethernet and LTE backhaul. One unit covers a typical
+    8 km valley floor with line of sight.
+  specs:
+    protocol: LoRaWAN 1.0.4
+    backhaul: [Ethernet, LTE]
+    ip_rating: IP65
+  bom:
+    - part: NK-GW-RADIO
+      name: Radio board
+      supplier: Nordkrets AB
+    - part: LC-ETH-20
+      name: Outdoor Ethernet pigtail
+      supplier: Léman Cables SA
+    - part: JF-POLE-CLAMP
+      name: Pole clamp
+      supplier: Jura Fasteners SA
+  notes: Swisscom and Sunrise SIM profiles are preloaded; customer supplies the SIM.
+
+- sku: NL-ND-1
+  name: Mesh Field Node
+  category: Connectivity
+  unit_price_chf: 310
+  lead_time_days: 10
+  list_date: "2025-03-01"
+  summary: >
+    Battery node that forwards sensor frames to an NL-GW-4 gateway. Used when
+    a probe sits below the valley radio horizon.
+  specs:
+    hops: 3
+    battery_months: 24
+    ip_rating: IP67
+  bom:
+    - part: NK-ND-MINI
+      name: Mesh radio PCB
+      supplier: Nordkrets AB
+    - part: AC-AA-LITH
+      name: Lithium AA pack
+      supplier: Alpine Cells SA
+  notes: Sold in packs of ten. Pair with NL-GW-4.
+
+- sku: NL-ICE-2
+  name: Glacier Ablation Stake
+  category: Ice
+  unit_price_chf: 2740
+  lead_time_days: 60
+  list_date: "2024-06-18"
+  summary: >
+    Ultrasonic ablation stake for glacier surface-height change. Designed with
+    the University of Lausanne glaciology group.
+  specs:
+    range_m: 0.05–4
+    accuracy_mm: 5
+    operating_c: -40 to 20
+  bom:
+    - part: BP-U40-200
+      name: 40 kHz ultrasonic transducer
+      supplier: Baltic Piezo UAB
+    - part: AC-COLD
+      name: Cold-rated battery
+      supplier: Alpine Cells SA
+    - part: JF-STAKE
+      name: Aluminium stake and guy kit
+      supplier: Jura Fasteners SA
+  notes: Ships after the May production slot. Winter orders close 15 September.
+
+- sku: NL-FL-80
+  name: Open Channel Flow Meter
+  category: Hydrology
+  unit_price_chf: 3890
+  lead_time_days: 35
+  list_date: "2025-01-15"
+  summary: >
+    Velocity-area flow meter for irrigation canals and fish-pass channels.
+    Combines a side-looking ultrasonic path with a stage reading.
+  specs:
+    velocity_ms: 0.02–5
+    path_length_m: 1–20
+    ip_rating: IP68
+  bom:
+    - part: BP-U200-PAIR
+      name: 200 kHz transducer pair
+      supplier: Baltic Piezo UAB
+    - part: HC-FL-RAIL
+      name: Channel mounting rail
+      supplier: Helvetia Ceramics SA
+    - part: LC-FL-8M
+      name: 8 m wet cable
+      supplier: Léman Cables SA
+  notes: Requires a surveyed cross-section. Northline can quote a survey day separately.
+
+- sku: NL-CAL-KIT
+  name: Field Calibration Kit
+  category: Support
+  unit_price_chf: 640
+  lead_time_days: 7
+  list_date: "2024-02-01"
+  summary: >
+    Portable standards for river gauges, soil probes, and water-quality sondes.
+    Required for warranty-valid field recalibration.
+  specs:
+    includes: [stage bar, soil moisture blocks, pH 4/7/10 buffers, turbidity formazin]
+    case: IP67 Pelican-style
+  bom:
+    - part: JF-CASE-LATCH
+      name: Case hardware
+      supplier: Jura Fasteners SA
+  notes: Buffers expire 24 months after fill date printed on the bottle.

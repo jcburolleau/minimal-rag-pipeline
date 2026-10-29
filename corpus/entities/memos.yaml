@@ -1,0 +1,67 @@
+- id: MEM-2024-11
+  title: River gauge list-price freeze
+  date: "2024-11-12"
+  author: Léa Morel
+  audience: Sales and finance
+  body: |
+    The NL-RG-240 Alpine River Gauge stays at CHF 2 480 through 31 December 2026.
+    Do not quote project discounts below 8% without CFO approval. The freeze
+    exists because Baltic Piezo held the EUR transducer price for the same window.
+
+- id: MEM-2025-03
+  title: Rhine Silicon fab move
+  date: "2025-03-28"
+  author: Henrik Dahl
+  audience: Soil product line and procurement
+  body: |
+    Rhine Silicon will move RS-HUM-7 to a Dresden line in April. Expect a
+    contractual lead-time change from 45 days to about 70 days. Do not promise
+    NL-SP-90 delivery inside 45 days on new orders after 20 April 2025.
+
+    Safety stock of RS-HUM-7 should rise from four weeks to eight weeks.
+    List price of the finished probe remains CHF 890.
+
+- id: MEM-2025-04
+  title: Amendment AMD-2025-01 in force
+  date: "2025-04-21"
+  author: Martin Keller
+  audience: All staff
+  body: |
+    Amendment AMD-2025-01 to contract C-2024-RS is signed and effective
+    20 April 2025. RS-HUM-7 lead time is now 70 days. Piece price is unchanged
+    at EUR 18.40. Product sheet NL-SP-90 must show 70-day lead time.
+
+    When a document disagrees on this point, prefer the amendment date
+    18 April 2025 and this memo over the original January 2024 agreement.
+
+- id: MEM-2025-06
+  title: Q2 supplier scorecard
+  date: "2025-07-04"
+  author: Jonas Meier
+  audience: Operations
+  body: |
+    On-time delivery in Q2 2025:
+
+    - Jura Fasteners: 99%
+    - Helvetia Ceramics: 97%
+    - Alpine Cells: 96%
+    - Léman Cables: 95%
+    - Nordkrets: 94%
+    - Tessin Optics: 91%
+    - Baltic Piezo: 90%
+    - Rhine Silicon: 71% (lead-time reset after AMD-2025-01)
+
+    Rhine Silicon stays off new dual-source hold. A second moisture-IC vendor
+    should be sampled before October 2025.
+
+- id: MEM-2026-09
+  title: Open Jura Fasteners renewal
+  date: "2026-09-08"
+  author: Martin Keller
+  audience: Procurement
+  body: |
+    Contract C-2022-JF with Jura Fasteners SA ends 30 November 2026. That is the
+    nearest supply-contract end date on the books. Liability cap is CHF 250 000.
+    Auto-renewal requires 90 days notice to stop, so a decision is due by
+    1 September 2026. This memo records that talks opened on 8 September 2026
+    and are expected to close with a 24-month extension.

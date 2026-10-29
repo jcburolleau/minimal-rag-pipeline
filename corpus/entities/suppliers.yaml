@@ -1,0 +1,113 @@
+- id: baltic-piezo
+  name: Baltic Piezo UAB
+  city: Vilnius
+  country: Lithuania
+  since: "2016-05-20"
+  category: Transducers
+  contact: Rūta Kazlauskaitė
+  email: ruta@baltic-piezo.example
+  lead_time_days: 21
+  payment_terms: Net 30
+  notes: >
+    Sole source for the 40 kHz and 200 kHz ultrasonic transducers used in
+    NL-RG-240, NL-ICE-2, and NL-FL-80. Incoming inspection is 100% on lot size
+    under 50, sample of 5 otherwise.
+
+- id: rhine-silicon
+  name: Rhine Silicon GmbH
+  city: Freiburg
+  country: Germany
+  since: "2019-08-01"
+  category: Semiconductor
+  contact: Lukas Hartmann
+  email: lukas.hartmann@rhine-silicon.example
+  lead_time_days: 70
+  payment_terms: Net 45
+  notes: >
+    Supplies the RS-HUM-7 capacitive moisture IC for NL-SP-90. Lead time moved
+    from 45 to 70 days in April 2025 after a fab change in Dresden. Dual-source
+    work is open but not qualified.
+
+- id: helvetia-ceramics
+  name: Helvetia Ceramics SA
+  city: Renens
+  country: Switzerland
+  since: "2014-06-02"
+  category: Housings
+  contact: Nadine Favre
+  email: n.favre@helvetia-ceramics.example
+  lead_time_days: 18
+  payment_terms: Net 15
+  notes: >
+    Local housing and shaft supplier. ISO 9001. Holds two weeks of NL-RG-240
+    cans on consignment in Renens.
+
+- id: alpine-cells
+  name: Alpine Cells SA
+  city: Sion
+  country: Switzerland
+  since: "2015-01-12"
+  category: Energy
+  contact: Pierre-Alain Rey
+  email: pa.rey@alpine-cells.example
+  lead_time_days: 12
+  payment_terms: Net 30
+  notes: >
+    All field batteries. Cold-rated AC-COLD packs have a 16-week seasonal peak
+    before glacier deployments.
+
+- id: nordkrets
+  name: Nordkrets AB
+  city: Malmö
+  country: Sweden
+  since: "2017-09-04"
+  category: Electronics
+  contact: Ingrid Holm
+  email: ingrid.holm@nordkrets.example
+  lead_time_days: 20
+  payment_terms: Net 30
+  notes: >
+    All Northline PCBs. NPI boards ship in ten days; production lots in twenty.
+    IPC Class 2.
+
+- id: tessin-optics
+  name: Tessin Optics SA
+  city: Lugano
+  country: Switzerland
+  since: "2018-03-22"
+  category: Optics
+  contact: Marco Bernasconi
+  email: m.bernasconi@tessin-optics.example
+  lead_time_days: 30
+  payment_terms: Net 30
+  notes: >
+    Optical windows and dust cells for NL-WQ-3, NL-AQ-7, and NL-WS-12.
+    Scratch-dig 40/20. No offshore subcontracting allowed.
+
+- id: jura-fasteners
+  name: Jura Fasteners SA
+  city: Delémont
+  country: Switzerland
+  since: "2014-03-12"
+  category: Hardware
+  contact: Elise Girard
+  email: elise.girard@jura-fasteners.example
+  lead_time_days: 8
+  payment_terms: Net 15
+  notes: >
+    Fasteners, mast kits, glacier stakes, case latches. Oldest active supplier.
+    Contract C-2022-JF is the next to renew.
+
+- id: leman-cables
+  name: Léman Cables SA
+  city: Vevey
+  country: Switzerland
+  since: "2020-02-14"
+  category: Cabling
+  contact: Yann Dubois
+  email: y.dubois@leman-cables.example
+  lead_time_days: 16
+  payment_terms: Net 30
+  notes: >
+    Screened and wet-mate cables. Purple overmold is Northline-specific and
+    must not be substituted.
