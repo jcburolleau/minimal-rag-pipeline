@@ -6,23 +6,47 @@ import gradio as gr
 
 from app.config import settings
 from app.documents import CHUNK_OVERLAP, CHUNK_SIZE
+from app.retrieve import RetrievalOptions
 from evaluations.answer import evaluate_answer
-from evaluations.retrieval import evaluate_retrieval
+from evaluations.retrieval import evaluate_retrieval, index_store, options_label
 from evaluations.tests import load_tests
 
+TECHNIQUES = ["Rewrite", "Expand", "Rerank"]
 
-def _retrieval_view(k: int, limit: int, progress=gr.Progress()) -> tuple[str, list[list[str]]]:
+
+def _options(k: int, techniques: list[str], candidates: int) -> RetrievalOptions:
+    return RetrievalOptions(
+        rewrite="Rewrite" in techniques,
+        expand="Expand" in techniques,
+        rerank="Rerank" in techniques,
+        k=int(k),
+        candidate_k=int(candidates),
+    )
+
+
+def _retrieval_view(
+    k: int,
+    limit: int,
+    index: str,
+    techniques: list[str],
+    candidates: int,
+    progress=gr.Progress(),
+) -> tuple[str, list[list[str]]]:
+    options = _options(k, techniques, candidates)
     try:
         scores = evaluate_retrieval(
             int(k),
             int(limit),
             on_progress=lambda done, total: progress(done / total, desc=f"Retrieval {done}/{total}"),
+            store=index_store(index),
+            options=options,
         )
     except Exception as exc:  # noqa: BLE001 — show the failure on the page
         return f"Retrieval evaluation failed.\n\n{exc}", []
     summary = (
         f"### MRR\n**{scores.mrr_percent:.1f}%**\n\n"
         f"### nDCG\n**{scores.ndcg_percent:.1f}%**\n\n"
+        f"{options_label(index, options)}. "
         f"Scored {scores.scored} questions at k={int(k)}. "
         f"Skipped {scores.skipped} questions with no gold document."
     )
@@ -33,12 +57,22 @@ def _retrieval_view(k: int, limit: int, progress=gr.Progress()) -> tuple[str, li
     return summary, rows
 
 
-def _answer_view(k: int, limit: int, progress=gr.Progress()) -> tuple[str, list[list[str]]]:
+def _answer_view(
+    k: int,
+    limit: int,
+    index: str,
+    techniques: list[str],
+    candidates: int,
+    progress=gr.Progress(),
+) -> tuple[str, list[list[str]]]:
+    options = _options(k, techniques, candidates)
     try:
         scores = evaluate_answer(
             int(k),
             int(limit),
             on_progress=lambda done, total: progress(done / total, desc=f"Answer {done}/{total}"),
+            options=options,
+            store=index_store(index),
         )
     except Exception as exc:  # noqa: BLE001 — show the failure on the page
         return f"Answer evaluation failed.\n\n{exc}", []
@@ -47,6 +81,7 @@ def _answer_view(k: int, limit: int, progress=gr.Progress()) -> tuple[str, list[
         f"### Completeness\n**{scores.completeness_percent:.1f}%**\n\n"
         f"### Relevance\n**{scores.relevance_percent:.1f}%**\n\n"
         f"Mean scores {scores.accuracy:.2f} / {scores.completeness:.2f} / {scores.relevance:.2f} out of 5. "
+        f"{options_label(index, options)}. "
         f"Scored {scores.scored} questions at k={int(k)}. Failed {scores.failed}."
     )
     if scores.last_error:
@@ -72,12 +107,31 @@ def main() -> None:
 
 Retrieval is **MRR** and **nDCG**. Answers are judged for **accuracy**, **completeness**, and **relevance** (1–5, shown as a percentage of 5).
 
-This run uses `{settings.embed_model}` and `{settings.chat_model}`, chunks of {CHUNK_SIZE} characters with {CHUNK_OVERLAP} overlap. Top-k changes the ranking for this run. A new embedding model or chunk size needs a fresh ingest before the percentages are comparable.
+This run uses `{settings.embed_model}` and `{settings.chat_model}`. The `markdown` index splits into chunks of {CHUNK_SIZE} characters with {CHUNK_OVERLAP} overlap; the `llm` index is built by LLM pre-processing (`uv run python -m scripts.ingest --chunker llm`). Top-k, the index, and the techniques change only this run. A new embedding model or chunk size needs a fresh ingest before the percentages are comparable.
+
+**Rewrite** turns each question into a short search query, **Expand** adds {settings.expand_n} alternative queries (results merged with reciprocal rank fusion), **Rerank** has the LLM reorder the candidates and keep the top k. Each adds one LLM call per question.
 """
         )
         with gr.Row():
             k = gr.Slider(1, 20, value=settings.top_k, step=1, label="Top K")
             limit = gr.Slider(1, total, value=total, step=1, label="Questions")
+        with gr.Row():
+            index = gr.Dropdown(["markdown", "llm"], value=settings.chunker, label="Index")
+            techniques = gr.CheckboxGroup(
+                TECHNIQUES,
+                value=[
+                    name
+                    for name, enabled in zip(
+                        TECHNIQUES,
+                        (settings.rewrite_query, settings.expand_query, settings.rerank),
+                    )
+                    if enabled
+                ],
+                label="Techniques",
+            )
+            candidates = gr.Slider(
+                5, 40, value=settings.candidate_k, step=1, label="Rerank candidates per query"
+            )
         with gr.Row():
             retrieval_button = gr.Button("Run retrieval evaluation", variant="primary")
             answer_button = gr.Button("Run answer evaluation")
@@ -102,12 +156,12 @@ This run uses `{settings.embed_model}` and `{settings.chat_model}`, chunks of {C
                 )
         retrieval_button.click(
             _retrieval_view,
-            inputs=[k, limit],
+            inputs=[k, limit, index, techniques, candidates],
             outputs=[retrieval_summary, retrieval_table],
         )
         answer_button.click(
             _answer_view,
-            inputs=[k, limit],
+            inputs=[k, limit, index, techniques, candidates],
             outputs=[answer_summary, answer_table],
         )
     demo.queue()

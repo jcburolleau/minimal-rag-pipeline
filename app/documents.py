@@ -12,6 +12,8 @@ HEADERS_TO_SPLIT_ON = [
     ("#", "h1"),
     ("##", "section"),
 ]
+CHUNK_SIZE = 1200
+CHUNK_OVERLAP = 150
 
 
 def split_frontmatter(raw: str) -> tuple[dict, str]:
@@ -57,7 +59,7 @@ def split_corpus(documents: list[Document]) -> list[Document]:
         headers_to_split_on=HEADERS_TO_SPLIT_ON,
         strip_headers=False,
     )
-    length_splitter = MarkdownTextSplitter(chunk_size=1200, chunk_overlap=150)
+    length_splitter = MarkdownTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
 
     headed: list[Document] = []
     for doc in documents:
@@ -81,11 +83,11 @@ def split_corpus(documents: list[Document]) -> list[Document]:
         doc_id = str(doc.metadata.get("doc_id") or "doc")
         index = counts.get(doc_id, 0)
         counts[doc_id] = index + 1
-        documents.append(_with_ids_and_prefix(doc, index))
+        documents.append(with_ids_and_prefix(doc, index))
     return documents
 
 
-def _with_ids_and_prefix(doc: Document, index: int) -> Document:
+def with_ids_and_prefix(doc: Document, index: int) -> Document:
     metadata = dict(doc.metadata)
     doc_id = str(metadata.get("doc_id") or "doc")
     section = str(metadata.get("section") or "Overview")

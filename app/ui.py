@@ -7,6 +7,7 @@ from collections.abc import Iterator
 import gradio as gr
 
 from app.chat import answer
+from app.config import settings
 from app.models import ChatTurn
 
 
@@ -47,13 +48,35 @@ def respond(message: str, history: list) -> Iterator[str]:
         yield accumulated + (f"\n\n{exc}" if accumulated else str(exc))
 
 
+def techniques_status() -> str:
+    """Which retrieval techniques this process runs. Settings are read from .env once, at startup."""
+    techniques = [
+        ("Document pre-processing", settings.chunker == "llm", f"index `{settings.collection_name}`"),
+        ("Query rewriting", settings.rewrite_query, ""),
+        ("Query expansion", settings.expand_query, f"{settings.expand_n} extra queries"),
+        (
+            "Re-ranking",
+            settings.rerank,
+            f"top {settings.top_k} of {settings.candidate_k} candidates per query",
+        ),
+    ]
+    parts = []
+    for name, enabled, detail in techniques:
+        if enabled:
+            parts.append(f"✅ **{name}**" + (f" ({detail})" if detail else ""))
+        else:
+            parts.append(f"⬜ {name}")
+    return "Retrieval techniques from `.env`: " + " · ".join(parts)
+
+
 def main() -> None:
     chat = gr.ChatInterface(
         respond,
         title="Northline Sensors — Field knowledge",
         description=(
             "Internal lookup over a fictional instrument catalogue, suppliers, and contracts. "
-            "Answers come from retrieved passages, not from the model's memory."
+            "Answers come from retrieved passages, not from the model's memory.\n\n"
+            + techniques_status()
         ),
     )
     chat.launch()

@@ -2,15 +2,13 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any
 
 import chromadb
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.runnables import Runnable, RunnableBranch, RunnableLambda
+from langchain_core.runnables import Runnable, RunnableBranch
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from app.config import settings
@@ -35,47 +33,59 @@ def listed_collections(chroma_client: chromadb.PersistentClient | None = None) -
     return [str(collection.name) for collection in connection.list_collections()]
 
 
-def collection_exists(chroma_client: chromadb.PersistentClient | None = None) -> bool:
-    return settings.table_name in listed_collections(chroma_client)
+def collection_exists(
+    chroma_client: chromadb.PersistentClient | None = None,
+    collection_name: str | None = None,
+) -> bool:
+    return (collection_name or settings.collection_name) in listed_collections(chroma_client)
 
 
-def row_count() -> int:
-    if not collection_exists():
+def row_count(collection_name: str | None = None) -> int:
+    name = collection_name or settings.collection_name
+    if not collection_exists(collection_name=name):
         return 0
-    return int(client().get_collection(settings.table_name).count())
+    return int(client().get_collection(name).count())
 
 
 def embeddings() -> OpenAIEmbeddings:
     return OpenAIEmbeddings(model=settings.embed_model, api_key=api_key())
 
 
-def llm() -> ChatOpenAI:
+def llm(
+    model: str | None = None,
+    streaming: bool = True,
+    temperature: float | None = None,
+) -> ChatOpenAI:
+    """Chat model. Technique calls (rewrite, expand, rerank, preprocess) use streaming=False, temperature=0."""
     return ChatOpenAI(
-        model=settings.chat_model,
+        model=model or settings.chat_model,
         api_key=api_key(),
-        streaming=True,
+        streaming=streaming,
+        temperature=temperature,
     )
 
 
-def vectorstore() -> Chroma:
-    if not collection_exists():
+def vectorstore(collection_name: str | None = None) -> Chroma:
+    name = collection_name or settings.collection_name
+    if not collection_exists(collection_name=name):
         raise FileNotFoundError(
-            f"Index collection '{settings.table_name}' is missing. Run ingest first."
+            f"Index collection '{name}' is missing. Run ingest first."
         )
     return Chroma(
-        collection_name=settings.table_name,
+        collection_name=name,
         embedding_function=embeddings(),
         persist_directory=str(persist_path()),
         collection_metadata=COLLECTION_METADATA,
     )
 
 
-def overwrite_documents(documents: list[Document]) -> int:
-    """Drop the northline collection and write documents through the LangChain store."""
+def overwrite_documents(documents: list[Document], collection_name: str | None = None) -> int:
+    """Drop the collection and write documents through the LangChain store."""
+    name = collection_name or settings.collection_name
     path = persist_path()
     chroma_client = client(path)
-    if collection_exists(chroma_client):
-        chroma_client.delete_collection(settings.table_name)
+    if collection_exists(chroma_client, name):
+        chroma_client.delete_collection(name)
 
     embed = embeddings()
     store: Chroma | None = None
@@ -87,7 +97,7 @@ def overwrite_documents(documents: list[Document]) -> int:
                 batch,
                 embedding=embed,
                 ids=ids,
-                collection_name=settings.table_name,
+                collection_name=name,
                 persist_directory=str(path),
                 collection_metadata=COLLECTION_METADATA,
             )
@@ -97,31 +107,22 @@ def overwrite_documents(documents: list[Document]) -> int:
     return len(documents)
 
 
-class ScoredChromaRetriever(BaseRetriever):
-    """Retriever that maps Chroma distances to UI-friendly 0–1 scores."""
-
-    k: int = 5
-
-    def _get_relevant_documents(
-        self,
-        query: str,
-        *,
-        run_manager: Any | None = None,
-    ) -> list[Document]:
-        pairs = vectorstore().similarity_search_with_score(query, k=self.k)
-        documents: list[Document] = []
-        for doc, distance in pairs:
-            metadata = dict(doc.metadata)
-            metadata.pop("source", None)
-            metadata["score"] = round(1.0 / (1.0 + float(distance)), 4)
-            documents.append(
-                Document(
-                    id=str(metadata.get("id") or doc.id or ""),
-                    page_content=doc.page_content,
-                    metadata=metadata,
-                )
+def search(query: str, k: int, store: Chroma | None = None) -> list[Document]:
+    """Top-k chunks with a 0–1 score. `query` is used as given."""
+    pairs = (store or vectorstore()).similarity_search_with_score(query, k=k)
+    documents: list[Document] = []
+    for doc, distance in pairs:
+        metadata = dict(doc.metadata)
+        metadata.pop("source", None)
+        metadata["score"] = round(1.0 / (1.0 + float(distance)), 4)
+        documents.append(
+            Document(
+                id=str(metadata.get("id") or doc.id or ""),
+                page_content=doc.page_content,
+                metadata=metadata,
             )
-        return documents
+        )
+    return documents
 
 
 _COMPANY_DEIXIS = re.compile(
@@ -136,10 +137,6 @@ def ground_query(query: str) -> str:
     if "northline" in query.lower() or not _COMPANY_DEIXIS.search(query):
         return query
     return f"Northline Sensors SA — {query}"
-
-
-def as_retriever() -> Runnable:
-    return RunnableLambda(ground_query) | ScoredChromaRetriever(k=settings.top_k)
 
 
 def create_history_aware_retriever(

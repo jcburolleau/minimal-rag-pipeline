@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import sys
 from collections import defaultdict
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
+from langchain_chroma import Chroma
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
@@ -14,7 +14,14 @@ from pydantic import BaseModel, Field
 from app.chat import answer_once
 from app.config import settings
 from app.openai_client import api_key
-from evaluations.retrieval import CATEGORY_ORDER
+from app.retrieve import RetrievalOptions
+from evaluations.retrieval import (
+    CATEGORY_ORDER,
+    index_store,
+    options_from_args,
+    options_label,
+    parse_args,
+)
 from evaluations.tests import TestQuestion, select_tests
 
 JUDGE_SYSTEM = (
@@ -136,8 +143,11 @@ def evaluate_answer(
     k: int,
     limit: int | None = None,
     on_progress: Callable[[int, int], None] | None = None,
+    options: RetrievalOptions | None = None,
+    store: Chroma | None = None,
 ) -> AnswerScores:
     tests = select_tests(limit)
+    options = replace(options or RetrievalOptions(), k=k)
     judge = _judge()
     totals = {"accuracy": 0.0, "completeness": 0.0, "relevance": 0.0}
     scored = 0
@@ -149,7 +159,7 @@ def evaluate_answer(
         if on_progress:
             on_progress(index, total)
         try:
-            generated, documents = answer_once(test.question, k)
+            generated, documents = answer_once(test.question, options, store)
             verdict = judge.invoke(_judge_messages(test, generated, documents))
             if not isinstance(verdict, AnswerEval):
                 verdict = AnswerEval.model_validate(verdict)
@@ -211,11 +221,18 @@ def format_report(scores: AnswerScores, k: int) -> str:
 
 
 def main() -> None:
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else None
-    k = int(sys.argv[2]) if len(sys.argv) > 2 else settings.top_k
-    scores = evaluate_answer(k, limit, on_progress=lambda done, total: print(f"\r{done}/{total}", end=""))
+    args = parse_args(__doc__)
+    options = options_from_args(args)
+    scores = evaluate_answer(
+        args.k,
+        args.limit,
+        on_progress=lambda done, total: print(f"\r{done}/{total}", end=""),
+        options=options,
+        store=index_store(args.index),
+    )
     print()
-    print(format_report(scores, k))
+    print(options_label(args.index, options))
+    print(format_report(scores, args.k))
     for category, count, accuracy, completeness, relevance in scores.by_category:
         print(
             f"  {category:<14} n={count:<4} "
